@@ -1,0 +1,6 @@
+= Snowcamp 2018
+
+== Nous
+
+* Logan Hauspie image::images/lille.png[] / @lhauspie sur https://twitter.com/lhauspie[icon:twitter[]]
+* Nicolas Delsaux image::images/lille.png[] / @riduidel sur https://twitter.com/riduidel[icon:twitter[]] / https://github.com/riduidel[icon:github[]] / https://stackexchange.com/users/8620[icon:stack-overflow[]]
