@@ -1,6 +1,37 @@
+:icons: font
+
 = Snowcamp 2018
 
 == Nous
 
-* Logan Hauspie image::images/lille.png[] / @lhauspie sur https://twitter.com/lhauspie[icon:twitter[]]
-* Nicolas Delsaux image::images/lille.png[] / @riduidel sur https://twitter.com/riduidel[icon:twitter[]] / https://github.com/riduidel[icon:github[]] / https://stackexchange.com/users/8620[icon:stack-overflow[]]
+* Nicolas Delsaux / @riduidel sur https://twitter.com/riduidel[icon:twitter[]] / https://github.com/riduidel[icon:github[]] / https://stackexchange.com/users/8620[icon:stack-overflow[]]
+* Logan Hauspie / @lhauspie sur https://twitter.com/lhauspie[icon:twitter[]] / https://github.com/lhauspie[icon:github[]]
+
+[NOTE.speaker]
+--
+Donc on est tous les deux du Nord.
+Mais Logan vient de DOuai.
+Comment il va à Lille ? Ben en train, parce que l'autoroute est à peu près inutile.
+Mais son TER est parfois en retard.
+Et vous ? (enchaînement)
+--
+
+[background-iframe="http://raildar.fr/#lat=45.3068&lng=5.6374&zoom=10"]
+=== Vous (merci http://raildar.fr/#lat=45.3068&lng=5.6374&zoom=10[Raildar])
+
+[NOTE.speaker]
+--
+Les images de Raildar sont carrément à la bourre, et c'est dommage. 
+Mais quand même, il y a des trains qui sont un peu (ou beaucoup) en retard.
+Est-ce qu'on peut faire aussi bien que Raildar ? Voire même mieux ?
+--
+
+[%notitle]
+== Des données !
+
+image::images/DIGITALSNCF.png[background, size=cover]
+
+[NOTE.speaker]
+--
+Grâce à l'OpenData, la SNCF nous "garantit" un accès à ses données. Qu'est-ce qu'on peut en faire ?
+--
