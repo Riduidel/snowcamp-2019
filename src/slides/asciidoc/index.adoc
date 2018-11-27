@@ -91,8 +91,57 @@ Ces conteneurs sont des opérateurs Kubernetes. on trouve par exemple
 * Weave Flux, jenkins-X comme opérateurs CI/CD
 --
 
+=== De quoi a-t-on besoin ?
+
+* Un broker Kafka
+* Un cluster Elastic
+* Et du code de transformation
+
+== Kafka ?
+
+Ca n'est pas qu'un auteur
+
+[NOTE.speaker]
+--
+TODO Logan, tu peux jeter un oeil ?
+--
+
+=== Techniquement ?
+
+Kafka est un journal immutable distribué.
+
+* Un producteur peut ajouter une entrée dans ce journal
+* Un consomateur peut lire le contenu de ce journal
+
+=== Fonctionnellement ?
+
+Kafka est un broker distribué supportant plusieurs paradigmes
+
+* At most once
+* Exactly once
+* At least once
+
+Ca influe sur la rapidité et la fiabilité du cluster
+
+== Elastic ?
+
 === Pourquoi un opérateur CI/CD ?
 
+**TODO Illustration CI/CD avec K8s**
+
+[NOTE.speaker]
+--
+En 2019, on ne veut plus développer notre application, et la déployer après 3 mois de code.
+On veut pouvoir itérer rapidement.
+
+Pour ça, il nous faut un certain nombre de services : 
+du déploiement, 
+une registry maven/docker, 
+et des outils pour passer facilement d'une version à une autre.
+Coup de bol, c'est ce qu'apporte Jenkins-X !
+--
+
+=== Pourquoi Jenkins-X
 
 [NOTE.speaker]
 --
