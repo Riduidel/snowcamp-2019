@@ -33,5 +33,65 @@ image::images/DIGITALSNCF.png[background, size=cover]
 
 [NOTE.speaker]
 --
-Grâce à l'OpenData, la SNCF nous "garantit" un accès à ses données. Qu'est-ce qu'on peut en faire ?
+Grâce à l'OpenData, la SNCF nous "garantit" un accès à ses données.
+En fait, l'accès utilise l'API Navitia, implémentée pour la plupart des transports urbains.
+Donc ce qu'on va montrer là peut, plus ou moins, être appliqué pour les transports urbains (donc les bus par exemple).
+Qu'est-ce qu'on peut en faire ?
+
+* Un bête script en console pour afficher l'horaire de mon train ? Mouais ... sympa, mais
+** En public, c'est pas très impressionant
+** Ca n'est pas le sujet de notre conférence
+* Un moteur de recherche d'horaires de train pour savoir à quelle heure passe le train
+** Est-ce que ça n'est pas ce que fait la SNCF ou https://www.horairetrain.fr[HoraireTrain] ?
+* OK, et si on faisait une appli qui donne le retard des trains crowdsourcés ?
+** Ca veut dire récupérer l'horaire du train, et le confronter à l'horaire de passage aux arrêts précédents
+--
+
+=== Comment déployer notre appli ?
+
+image::images/kubernetes.png[]
+
+[NOTE.speaker]
+--
+On est en 2019 (et Bonne Année), donc on ne va pas déployer une application natie sur une machine physique.
+Non. 
+Comme on est jeunes et modernes, on va faire des conteneurs qu'on va déployer dans un environnement facile à exploiter.
+Et pour ça, le marché a voté (comme toujours avec ses pieds) et a choisi Kubernetes.
+Donc on suit.
+--
+
+=== keskecé ?
+
+image::images/kube-layers.png[]
+
+[NOTE.speaker]
+--
+Kubernetes fournit un moyen de déployer facilement nos conteneurs Docker et d'y accéder, 
+mais pas seulement.
+Kubernetes fournit aussi le moyen de décrire son environnement à travers des fichiers YAML, 
+et s'occupe de vérifier que le YAML que le développeur écrit est correctement déployé sur le cluster.
+Kubernetes fournit enfin le moyen à certains conteneurs privilégiés d'opérer sur le cluster.
+Ces conteneurs sont des opérateurs Kubernetes. on trouve par exemple 
+
+* Istio et les services meshes
+* Couchbase, kafka, ElasticSearch et toutes les autres bases de données
+* Helm, Skaffold et autres outils de déploiement
+* Weave Flux, jenkins-X comme opérateurs CI/CD
+--
+
+=== Pourquoi un opérateur CI/CD ?
+
+
+[NOTE.speaker]
+--
+On pouurrait parfaitement mettre Jenkins en amont de notre environnement Kubernetes et pousser des images validées.
+Alors pourquoi utiliser plutôt un opérateur ?
+
+Parce que ça apporte plusieurs avantages.
+Dabord, Jenkins-X ne contient pas que Jenkins comme on le voit à l'écran :
+
+TODO lister les composants de l'opérateur
+
+Ensuite, comme on va le voir plus tard, Jenkins-X fournit un déploiement par pull request de chaque projet.
+Il est donc facile de paralléliser le test des différents composants sur un environnement conforme à la prod.
 --
