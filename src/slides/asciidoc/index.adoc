@@ -59,7 +59,13 @@ Qu'est-ce qu'on peut en faire ?
 --
 
 
-=== Comment déployer notre appli ?
+== Comment déployer notre appli ?
+
+* Il nous faut des serveurs
+* Il faut transformer nos données
+* Il faut rechercher dans nos données
+
+=== Il nous faut des serveurs
 
 image::images/kubernetes.png[]
 
@@ -91,41 +97,7 @@ Ces conteneurs sont des opérateurs Kubernetes. on trouve par exemple
 * Weave Flux, jenkins-X comme opérateurs CI/CD
 --
 
-=== De quoi a-t-on besoin ?
-
-* Un broker Kafka
-* Un cluster Elastic
-* Et du code de transformation
-
-== Kafka ?
-
-Ca n'est pas qu'un auteur
-
-[NOTE.speaker]
---
-TODO Logan, tu peux jeter un oeil ?
---
-
-=== Techniquement ?
-
-Kafka est un journal immutable distribué.
-
-* Un producteur peut ajouter une entrée dans ce journal
-* Un consomateur peut lire le contenu de ce journal
-
-=== Fonctionnellement ?
-
-Kafka est un broker distribué supportant plusieurs paradigmes
-
-* At most once
-* Exactly once
-* At least once
-
-Ca influe sur la rapidité et la fiabilité du cluster
-
-== Elastic ?
-
-=== Pourquoi un opérateur CI/CD ?
+== Il faut déployer nos applications
 
 **TODO Illustration CI/CD avec K8s**
 
@@ -156,3 +128,66 @@ TODO lister les composants de l'opérateur
 Ensuite, comme on va le voir plus tard, Jenkins-X fournit un déploiement par pull request de chaque projet.
 Il est donc facile de paralléliser le test des différents composants sur un environnement conforme à la prod.
 --
+
+=== Installer Kubernetes avec Jenkins-X
+
+* Installer la ligne de commande `jx` sur une machine
+** Idéalement sur une VM GCE
+* Créer le cluster Kubernetes `jx create cluster gke --cluster-name=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=true --batch-mode=true`
+** Répondre à quelques questions
+** Attendre 5 minutes 
+
+[NOTE.speaker]
+--
+La grosse contrainte de GKE, c'est qu'il faut une autorisation Google, qu'on obtient à travers un navigateur.
+Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique (ce qui exclut la VM headless GCE).
+--
+
+== Il faut transformer les données
+
+[NOTE.speaker]
+--
+TODO Logan, tu peux jeter un oeil ?
+
+Il faut absolument s'appuyer sur les notions mentionnées dans https://www.confluent.io/blog/apache-kafka-samza-and-the-unix-philosophy-of-distributed-data/
+
+Un article plutôt bon pour synthétiser https://www.elastic.co/fr/blog/just-enough-kafka-for-the-elastic-stack-part1
+--
+
+=== Techniquement ?
+
+Kafka est un journal immutable distribué.
+
+* Un producteur peut ajouter une entrée dans ce journal
+* Un consomateur peut lire le contenu de ce journal
+
+=== Fonctionnellement ?
+
+Kafka est un broker distribué supportant plusieurs paradigmes
+
+* At most once
+* Exactly once
+* At least once
+
+Ca influe sur la rapidité et la fiabilité du cluster
+
+== Il faut rechercher les données
+
+=== Elastic
+
+* Base de données NoSQL orientée documents
+* Moteur de recherche distribué basé sur Lucene
+* Accessible via une API HTTP
+
+=== Kibana
+
+* Interface de visualisation des documents stockés dans Elastic
+* Facilement configurable
+* Utilisable dans une application web publique
+
+== Comment ça s'assemble ?
+
+[plantuml, {plantumldir}1_assemblage, png]
+----
+include::plantuml/1_assemblage.plantuml[]
+----
