@@ -1,4 +1,6 @@
 :icons: font
+:revealjs_history: true
+:revealjs_previewLinks: true
 
 = Snowcamp 2018
 
@@ -115,6 +117,10 @@ Coup de bol, c'est ce qu'apporte Jenkins-X !
 
 === Pourquoi Jenkins-X
 
+* Jenkins
+* https://www.weave.works/blog/gitops-operations-by-pull-request[GitOps] (comme https://github.com/weaveworks/flux[Weave Flux])
+
+
 [NOTE.speaker]
 --
 On pourrait parfaitement mettre Jenkins en amont de notre environnement Kubernetes et pousser des images validées.
@@ -132,8 +138,7 @@ Il est donc facile de paralléliser le test des différents composants sur un en
 === Installer Kubernetes avec Jenkins-X
 
 * Installer la ligne de commande `jx` sur une machine
-** Idéalement sur une VM GCE
-* Créer le cluster Kubernetes `jx create cluster gke --cluster-name=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=true --batch-mode=true`
+* Créer le cluster Kubernetes 
 ** Répondre à quelques questions
 ** Attendre 5 minutes 
 
@@ -141,6 +146,9 @@ Il est donc facile de paralléliser le test des différents composants sur un en
 --
 La grosse contrainte de GKE, c'est qu'il faut une autorisation Google, qu'on obtient à travers un navigateur.
 Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique (ce qui exclut la VM headless GCE).
+
+`jx create cluster gke --cluster-name=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=true --batch-mode=true --environment-git-owner=Zenika --git-api-token=d1f2bb3c01672937dfbff71ba6a246f54b5211df --git-username=Riduidel
+--install-dependencies=true`
 --
 
 == Il faut transformer les données
