@@ -119,6 +119,9 @@ Coup de bol, c'est ce qu'apporte Jenkins-X !
 
 * Jenkins
 * https://www.weave.works/blog/gitops-operations-by-pull-request[GitOps] (comme https://github.com/weaveworks/flux[Weave Flux])
+* Mais aussi
+** Nexus
+** Chartmuseum
 
 
 [NOTE.speaker]
@@ -147,9 +150,32 @@ Il est donc facile de paralléliser le test des différents composants sur un en
 La grosse contrainte de GKE, c'est qu'il faut une autorisation Google, qu'on obtient à travers un navigateur.
 Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique (ce qui exclut la VM headless GCE).
 
-`jx create cluster gke --cluster-name=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=true --batch-mode=true --environment-git-owner=Zenika --git-api-token=d1f2bb3c01672937dfbff71ba6a246f54b5211df --git-username=Riduidel
---install-dependencies=true`
+`jx create cluster gke --cluster-name=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=false --batch-mode=true --install-dependencies=true --environment-git-owner=Zenika --git-api-token=$GIT_ACCESS_TOKEN --git-username=Riduidel`
 --
+
+=== Démo
+
+[NOTE.speaker]
+--
+Les outils installés sont
+
+[source]
+----
+$ jx open
+Name                      URL
+jenkins                   http://jenkins.jx.35.190.213.22.nip.io
+jenkins-x-chartmuseum     http://chartmuseum.jx.35.190.213.22.nip.io
+jenkins-x-docker-registry http://docker-registry.jx.35.190.213.22.nip.io
+jenkins-x-monocular-api   http://monocular.jx.35.190.213.22.nip.io
+jenkins-x-monocular-ui    http://monocular.jx.35.190.213.22.nip.io
+nexus                     http://nexus.jx.35.190.213.22.nip.io
+----
+
+Avec en bonus un petit tour sur l'environnement de prod accessible dans GitHub : https://github.com/Zenika/environment-snowcamp-2019-production
+
+**NE PAS OUBLIER HELM**
+--
+
 
 == Il faut transformer les données
 
@@ -160,6 +186,40 @@ TODO Logan, tu peux jeter un oeil ?
 Il faut absolument s'appuyer sur les notions mentionnées dans https://www.confluent.io/blog/apache-kafka-samza-and-the-unix-philosophy-of-distributed-data/
 
 Un article plutôt bon pour synthétiser https://www.elastic.co/fr/blog/just-enough-kafka-for-the-elastic-stack-part1
+
+On installe Kafka avec Helm ... Comme ça
+
+[WARNING]
+--
+Il y a plusieurs charts Helm Kafka. Et celui fourni par Bitnami ne contient que Kafka et Zookeeper.
+Or on veut plus que ça.
+Il faut donc utiliser le chart https://docs.confluent.io/current/installation/installing_cp/cp-helm-charts/docs/index.html[fourni par Confluent]
+--
+
+[source]
+----
+helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+helm repo update
+helm install confluent/cp-helm-charts --name kafka --namespace kafka
+----
+
+Et il faut ajouter un client Kafka 
+et quelques interfaces (Topics UI, Connect UI)
+
+[source]
+----
+kubectl apply -f src/k8s/kafka/kafka-client.yml
+kubectl apply -f src/k8s/kafka/kafka-topics-ui-pod.yml
+kubectl apply -f src/k8s/kafka/kafka-topics-ui-service.yml
+kubectl apply -f src/k8s/kafka/kafka-connect-ui.yml
+----
+
+Les accès se font via des `port-forward` :
+
+[source]
+----
+kubectl port-forward --namespace kafka kafka-topics-ui 18000 8000
+----
 --
 
 === Techniquement ?

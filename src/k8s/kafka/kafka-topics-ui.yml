@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kafka-topics-ui
+  namespace: kafka
+spec:
+  containers:
+  - name: kafka-topics-ui
+    image: landoop/kafka-topics-ui
+    env:
+    - name: KAFKA_REST_PROXY_URL
+      value: http://kafka-cp-kafka-rest:8082
+    ports:
+    - containerPort: 8000
+      name: connect-ui
+      protocol: TCP
