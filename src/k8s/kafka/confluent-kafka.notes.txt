@@ -1,0 +1,106 @@
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
+Connection string for Confluent Kafka:
+  kafka-cp-zookeeper-0.kafka-cp-zookeeper-headless:2181,kafka-cp-zookeeper-1.kafka-cp-zookeeper-headless:2181,kafka-cp-zookeeper-2.kafka-cp-zookeeper-headless:2181
+
+To connect from a client pod:
+
+1. Deploy a zookeeper client pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: zookeeper-client
+      namespace: kafka
+    spec:
+      containers:
+      - name: zookeeper-client
+        image: confluentinc/cp-zookeeper:5.0.1
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+
+2. Log into the Pod
+
+  kubectl exec -it zookeeper-client -- /bin/bash
+
+3. Use zookeeper-shell to connect in the zookeeper-client Pod:
+
+  zookeeper-shell kafka-cp-zookeeper:2181
+
+4. Explore with zookeeper commands, for example:
+
+  # Gives the list of active brokers
+  ls /brokers/ids
+
+  # Gives the list of topics
+  ls /brokers/topics
+
+  # Gives more detailed information of the broker id '0'
+  get /brokers/ids/0## ------------------------------------------------------
+## Kafka
+## ------------------------------------------------------
+To connect from a client pod:
+
+1. Deploy a kafka client pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kafka-client
+      namespace: kafka
+    spec:
+      containers:
+      - name: kafka-client
+        image: confluentinc/cp-kafka:5.0.1
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+
+2. Log into the Pod
+
+  kubectl exec -it kafka-client -- /bin/bash
+
+3. Explore with kafka commands:
+
+  # Create the topic
+  kafka-topics --zookeeper kafka-cp-zookeeper-headless:2181 --topic kafka-topic --create --partitions 1 --replication-factor 1 --if-not-exists
+
+  # Create a message
+  MESSAGE="`date -u`"
+
+  # Produce a test message to the topic
+  echo "$MESSAGE" | kafka-console-producer --broker-list kafka-cp-kafka-headless:9092 --topic kafka-topic
+
+  # Consume a test message from the topic
+
+## Documentation from Bitnami Kafka helm chart
+
+To create a topic run the following command:
+
+    kubectl exec -it --namespace kafka  kafka-client -- kafka-topics --create --zookeeper kafka-cp-zookeeper-headless:2181 --replication-factor 1 --partitions 1 --topic test
+
+To list all the topics run the following command:
+
+    kubectl exec -it --namespace kafka  kafka-client -- kafka-topics --list --zookeeper kafka-cp-zookeeper-headless:2181
+
+To start a kafka producer run the following command:
+
+    kubectl exec -it --namespace kafka  kafka-client -- kafka-console-producer --broker-list kafka-cp-kafka:9092 --topic test
+
+To start a kafka consumer run the following command:
+
+    kubectl exec -it --namespace kafka  kafka-client -- kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
+
+To connect to your Kafka server from outside the cluster execute the following commands:
+
+    kubectl port-forward --namespace kafka svc/kafka-cp-kafka 9092:9092 &
+    echo "Kafka URL: http://127.0.0.1:9092"
+
+    PRODUCER:
+        kafka-console-producer.sh --broker-list 127.0.0.1:9092 --topic test
+    CONSUMER:
+        kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --topic test --from-beginning
