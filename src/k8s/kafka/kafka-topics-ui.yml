@@ -10,6 +10,8 @@ spec:
     env:
     - name: KAFKA_REST_PROXY_URL
       value: http://kafka-cp-kafka-rest:8082
+    - name: PROXY
+      value: "true"
     ports:
     - containerPort: 8000
       name: connect-ui
