@@ -209,8 +209,7 @@ et quelques interfaces (Topics UI, Connect UI)
 [source]
 ----
 kubectl apply -f src/k8s/kafka/kafka-client.yml
-kubectl apply -f src/k8s/kafka/kafka-topics-ui-pod.yml
-kubectl apply -f src/k8s/kafka/kafka-topics-ui-service.yml
+kubectl apply -f src/k8s/kafka/kafka-topics-ui.yml
 kubectl apply -f src/k8s/kafka/kafka-connect-ui.yml
 ----
 
