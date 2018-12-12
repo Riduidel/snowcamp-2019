@@ -196,6 +196,26 @@ TODO Logan, tu peux jeter un oeil ?
 Il faut absolument s'appuyer sur les notions mentionnées dans https://www.confluent.io/blog/apache-kafka-samza-and-the-unix-philosophy-of-distributed-data/
 
 Un article plutôt bon pour synthétiser https://www.elastic.co/fr/blog/just-enough-kafka-for-the-elastic-stack-part1
+--
+
+=== Techniquement ?
+
+Kafka est un journal immutable distribué.
+
+* Un producteur peut ajouter une entrée dans ce journal
+* Un consomateur peut lire le contenu de ce journal
+
+=== Fonctionnellement ?
+
+Kafka est un broker distribué supportant plusieurs paradigmes
+
+* At most once
+* Exactly once
+* At least once
+
+Ca influe sur la rapidité et la fiabilité du cluster
+
+=== Allons-y !
 
 On installe Kafka avec Helm ... Comme ça
 
@@ -229,24 +249,6 @@ Les accès se font via des `port-forward` :
 ----
 kubectl port-forward --namespace kafka kafka-topics-ui 18000 8000
 ----
---
-
-=== Techniquement ?
-
-Kafka est un journal immutable distribué.
-
-* Un producteur peut ajouter une entrée dans ce journal
-* Un consomateur peut lire le contenu de ce journal
-
-=== Fonctionnellement ?
-
-Kafka est un broker distribué supportant plusieurs paradigmes
-
-* At most once
-* Exactly once
-* At least once
-
-Ca influe sur la rapidité et la fiabilité du cluster
 
 == Il faut rechercher les données
 
