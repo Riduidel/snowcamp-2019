@@ -29,6 +29,16 @@ Est-ce qu'on peut faire aussi bien que Raildar ? Voire même mieux ?
 --
 
 [%notitle]
+
+[background-iframe="https://whereismytrain.in/"]
+=== Qu'est-ce qu'on peut faire ?
+[%notitle]
+
+[NOTE.speaker]
+--
+Est-ce qu'on peut faire aussi bien que cette application indienne ?
+--
+
 == Des données !
 
 image::images/DIGITALSNCF.png[background, size=cover]
