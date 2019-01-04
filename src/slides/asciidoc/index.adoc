@@ -316,3 +316,30 @@ include::../../build/install.bat[lines=23]
 ----
 kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave-scope-weave-scope -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18080:4040
 ----
+
+== Et si on codait quelque chose ?
+
+=== Par exemple une application qui lit les données depuis Navitia
+
+[NOTE.speaker]
+--
+D'abrod on crée l'application
+
+[source]
+----
+jx create quickstart 
+----
+
+Les réponses dans l'ordre
+
+1. vertx-prometheus
+2. snowcamp-2019-sncf-timesheet-reader
+3. Organization: Zenika
+
+J'ai passé toutes les réponses évidentes.
+A la fin, on a
+
+1. Un repository GitHub ( https://github.com/Zenika/snowcamp-2019-sncf-timesheet-reader)
+2. un projet Jenkins ( http://jenkins.jx.35.240.72.245.nip.io/job/Zenika/job/snowcamp-2019-sncf-timesheet-reader/)
+
+Là, TODO il faut cherry-picker la version "qui marche" dans la version officielle
