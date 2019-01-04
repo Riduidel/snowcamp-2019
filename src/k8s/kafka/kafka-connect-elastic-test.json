@@ -1,0 +1,11 @@
+{
+    "name": "elasticsearch-sink-test",
+    "config": {
+        "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+        "tasks.max": "1",
+        "topics": "elasticsearch-sink-test",
+        "key.ignore": true,
+        "connection.url": "http://elasticsearch-master.elastic.svc.cluster.local:9200",
+        "type.name": "kafka-connect"
+    }
+}

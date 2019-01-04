@@ -160,7 +160,19 @@ Il est donc facile de paralléliser le test des différents composants sur un en
 La grosse contrainte de GKE, c'est qu'il faut une autorisation Google, qu'on obtient à travers un navigateur.
 Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique (ce qui exclut la VM headless GCE).
 
-`jx create cluster gke --cluster-name=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=false --batch-mode=true --install-dependencies=true --environment-git-owner=Zenika --git-api-token=$GIT_ACCESS_TOKEN --git-username=Riduidel`
+[source,sh]
+----
+include::../../build/install.sh[lines=3]
+----
+
+
+ou sous Windows
+
+[source,bat]
+----
+include::../../build/install.bat[lines=2]
+----
+
 --
 
 === Démo
@@ -226,21 +238,17 @@ Or on veut plus que ça.
 Il faut donc utiliser le chart https://docs.confluent.io/current/installation/installing_cp/cp-helm-charts/docs/index.html[fourni par Confluent]
 --
 
-[source]
+[source,bat]
 ----
-helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
-helm repo update
-helm install confluent/cp-helm-charts --name kafka --namespace kafka
+include::../../build/install.bat[lines=5..7]
 ----
 
 Et il faut ajouter un client Kafka 
 et quelques interfaces (Topics UI, Connect UI)
 
-[source]
+[source,bat]
 ----
-kubectl apply -f src/k8s/kafka/kafka-client.yml
-kubectl apply -f src/k8s/kafka/kafka-topics-ui.yml
-kubectl apply -f src/k8s/kafka/kafka-connect-ui.yml
+include::../../build/install.bat[lines=10..12]
 ----
 
 Les accès se font via des `port-forward` :
@@ -256,15 +264,11 @@ kubectl port-forward --namespace kafka kafka-topics-ui 18000 8000
 --
 Installer Elastic avec Helm
 
-[source]
+[source,bat]
 ----
-helm repo add elastic https://helm.elastic.co
-helm repo update
-helm install --namespace elastic --name elasticsearch stable/elasticsearch
-(voir https://github.com/elastic/helm-charts/blob/6.5.2-alpha1/elasticsearch/README.md)
-helm install --namespace elastic  --name kibana elastic/kibana --set elasticSearchURL=http://elasticsearch-master.elastic.svc.cluster.local:9200
-(voir https://github.com/elastic/helm-charts/tree/6.5.2-alpha1/kibana)
+include::../../build/install.bat[lines=15..20]
 ----
+
 --
 === Elastic
 
@@ -278,9 +282,37 @@ helm install --namespace elastic  --name kibana elastic/kibana --set elasticSear
 * Facilement configurable
 * Utilisable dans une application web publique
 
+=== Connecter Kafka à Elastic
+
+Avec l'https://docs.confluent.io/current/connect/references/restapi.html[interface REST de Kafka Connect] !
+
+[NOTE.speaker]
+--
+Donc on forwarde le port de kafka-connect localement
+
+[source]
+----
+kubectl -n kafka port-forward $(kubectl -n kafka get endpoints kafka-cp-kafka-connect -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18083:8083
+----
+
+Et on envoie la patate avec curl
+
+[source]
+----
+curl -v -X POST --data "@src/k8s/kafka/kafka-connect-elastic-test.json" -H "Content-Type: application/json" http://localhost:18083/connectors
+----
+--
+
 == Comment ça s'assemble ?
 
-[plantuml, {plantumldir}1_assemblage, png]
+Démonstration avec Weave Scope !
+
+[source,bat]
 ----
-include::plantuml/1_assemblage.plantuml[]
+include::../../build/install.bat[lines=23]
+----
+
+[source]
+----
+kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave-scope-weave-scope -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18080:4040
 ----
