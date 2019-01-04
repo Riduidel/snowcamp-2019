@@ -240,7 +240,7 @@ Il faut donc utiliser le chart https://docs.confluent.io/current/installation/in
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=5..7]
+include::../../build/install.bat[lines=6..9]
 ----
 
 Et il faut ajouter un client Kafka 
@@ -248,14 +248,15 @@ et quelques interfaces (Topics UI, Connect UI)
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=10..12]
+include::../../build/install.bat[lines=12..14]
 ----
 
 Les accès se font via des `port-forward` :
 
 [source]
 ----
-kubectl port-forward --namespace kafka kafka-topics-ui 18000 8000
+kubectl port-forward --namespace kafka kafka-topics-ui 28001:8000
+kubectl port-forward --namespace kafka kafka-connect-ui 28002:8000
 ----
 
 == Il faut rechercher les données
@@ -266,7 +267,7 @@ Installer Elastic avec Helm
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=15..20]
+include::../../build/install.bat[lines=17..22]
 ----
 
 --
@@ -309,7 +310,7 @@ Démonstration avec Weave Scope !
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=23]
+include::../../build/install.bat[lines=25]
 ----
 
 [source]
