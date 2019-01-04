@@ -1,5 +1,7 @@
 REM Create the cluster
-jx create cluster gke --cluster-name=snowcamp-2019 --default-admin-password=%DEFAULT_ADMIN_PASSWORD% --default-environment-prefix=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --gitops=false --batch-mode=true --install-dependencies=true --environment-git-owner=Zenika --git-api-token=%GIT_ACCESS_TOKEN% --git-username=Riduidel
+jx create cluster gke --cluster-name=snowcamp-2019 --default-admin-password=%DEFAULT_ADMIN_PASSWORD% --default-environment-prefix=snowcamp-2019 --project-id=snowcamp-2019-223915 --min-num-nodes=5 --max-num-nodes=10 --zone=europe-west1-d --machine-type=n1-standard-2 --install-dependencies=true --environment-git-owner=Zenika --git-api-token=%GIT_ACCESS_TOKEN% --git-username=Riduidel --gitops=false
+
+IF %ERRORLEVEL% NEQ 0 EXIT /B
 
 REM install kafka
 helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
