@@ -9,7 +9,7 @@ spec:
     image: landoop/kafka-connect-ui
     env:
     - name: CONNECT_URL
-      value: http://kafka-cp-kafka-connect:8082
+      value: http://kafka-cp-kafka-connect:8083
     ports:
     - containerPort: 8000
       name: connect-ui
