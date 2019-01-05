@@ -328,7 +328,7 @@ D'abrod on crée l'application
 
 [source]
 ----
-jx create quickstart 
+mkdir reader && cd reader && jx create quickstart 
 ----
 
 Les réponses dans l'ordre
