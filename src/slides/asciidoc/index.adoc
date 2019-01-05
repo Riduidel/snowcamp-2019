@@ -162,7 +162,7 @@ Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique 
 
 [source,sh]
 ----
-include::../../build/install.sh[lines=3]
+include::../../build/0-install.sh[lines=3]
 ----
 
 
@@ -170,7 +170,7 @@ ou sous Windows
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=2]
+include::../../build/0-install.bat[lines=2]
 ----
 
 --
@@ -240,7 +240,7 @@ Il faut donc utiliser le chart https://docs.confluent.io/current/installation/in
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=6..9]
+include::../../build/0-install.bat[lines=6..9]
 ----
 
 Et il faut ajouter un client Kafka 
@@ -248,7 +248,7 @@ et quelques interfaces (Topics UI, Connect UI)
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=12..14]
+include::../../build/0-install.bat[lines=12..14]
 ----
 
 Les accès se font via des `port-forward` :
@@ -267,7 +267,7 @@ Installer Elastic avec Helm
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=17..22]
+include::../../build/0-install.bat[lines=17..22]
 ----
 
 --
@@ -310,7 +310,7 @@ Démonstration avec Weave Scope !
 
 [source,bat]
 ----
-include::../../build/install.bat[lines=25]
+include::../../build/0-install.bat[lines=25]
 ----
 
 [source]
