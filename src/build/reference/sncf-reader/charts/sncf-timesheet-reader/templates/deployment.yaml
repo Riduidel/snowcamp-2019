@@ -40,4 +40,13 @@ spec:
           timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
+        env:
+          # Define the environment variable
+          - name: SNCF_READER_TOPIC_SCHEDULE
+            valueFrom:
+              configMapKeyRef:
+                # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+                name: kafka-config
+                # Specify the key associated with the value
+                key: kafka.topic
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
