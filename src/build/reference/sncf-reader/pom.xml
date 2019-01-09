@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>sncf-reader</artifactId>
+	<groupId>com.zenika.lille.snowcamp2019</groupId>
+	<version>0.0-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<prometheus.version>0.4.0</prometheus.version>
+		<vertx.version>3.5.4</vertx.version>
+		<retrofit.version>2.4.0</retrofit.version>
+
+		<vertx-maven-plugin.version>1.0.18</vertx-maven-plugin.version>
+
+		<!-- Vert.x configuration -->
+		<vertx.verticle>com.github.jenkinsx.quickstarts.vertx.rest.prometheus.VertxRestPrometheusVerticle</vertx.verticle>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.vertx</groupId>
+				<artifactId>vertx-dependencies</artifactId>
+				<version>${vertx.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.grundid.opendatalab</groupId>
+			<artifactId>geojson-jackson</artifactId>
+			<version>1.8.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.julienviet</groupId>
+			<artifactId>retrofit-vertx</artifactId>
+			<version>1.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>converter-jackson</artifactId>
+			<version>${retrofit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.prometheus</groupId>
+			<artifactId>simpleclient_hotspot</artifactId>
+			<version>${prometheus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.prometheus</groupId>
+			<artifactId>simpleclient_vertx</artifactId>
+			<version>${prometheus.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-kafka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.vertx</groupId>
+			<artifactId>vertx-web-client</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<!-- Documentation is available there https://github.com/dkanejs/docker-compose-maven-plugin -->
+					<groupId>com.dkanejs.maven.plugins</groupId>
+					<artifactId>docker-compose-maven-plugin</artifactId>
+					<version>2.2.0</version>
+					<configuration>
+						<composeFile>${project.build.directory}/config/docker-compose.yml</composeFile>
+						<detachedMode>true</detachedMode>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>io.reactiverse</groupId>
+					<artifactId>vertx-maven-plugin</artifactId>
+					<version>${vertx-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<id>vmp</id>
+							<goals>
+								<goal>initialize</goal>
+								<goal>package</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M1</version>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>default-vertx-usage</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.reactiverse</groupId>
+						<artifactId>vertx-maven-plugin</artifactId>
+						<configuration>
+							<jvmArgs>
+								<arg>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</arg>
+								<arg>-DSNCF_READER_TOKEN=${SNCF_TOKEN}</arg>
+								<arg>-DSNCF_READER_LIMIT_ROUTES_DOWNLOAD=10</arg>
+							</jvmArgs>
+							<redeploy>true</redeploy>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<!-- Start docker-compose with the correct configuration. Beware : this 
+				one only stop docker-compose when running a mvn clean -->
+			<id>autocompose</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<!-- here the phase you need -->
+								<phase>process-resources</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/config</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/test/config/docker</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<!-- Documentation is available there https://github.com/dkanejs/docker-compose-maven-plugin -->
+						<groupId>com.dkanejs.maven.plugins</groupId>
+						<artifactId>docker-compose-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>up</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>up</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>io.reactiverse</groupId>
+						<artifactId>vertx-maven-plugin</artifactId>
+						<version>${vertx-maven-plugin.version}</version>
+						<configuration>
+							<jvmArgs>
+								<arg>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</arg>
+								<arg>-DSNCF_READER_TOKEN=${SNCF_TOKEN}</arg>
+								<arg>-DSNCF_READER_LIMIT_ROUTES_DOWNLOAD=10</arg>
+								<arg>-DSNCF_READER_TOPIC_SCHEDULE=sncfReaderSchedule</arg>
+								<arg>-DSNCF_READER_KAFKA_BOOTSTRAP_SERVER=localhost:49092</arg>
+							</jvmArgs>
+							<redeploy>true</redeploy>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>autocompose-down-on-clean</id>
+			<!-- <activation> <file> <exists>target/config/docker-compose.yml</exists> 
+				</file> </activation> -->
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Documentation is available there https://github.com/dkanejs/docker-compose-maven-plugin -->
+						<groupId>com.dkanejs.maven.plugins</groupId>
+						<artifactId>docker-compose-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>down-on-clean</id>
+								<phase>pre-clean</phase>
+								<goals>
+									<goal>down</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>down-on-start</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>down</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
