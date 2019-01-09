@@ -23,3 +23,7 @@ REM (voir https://github.com/elastic/helm-charts/tree/6.5.2-alpha1/kibana)
 
 REM install weave scope
 helm install stable/weave-scope --namespace weave-scope --name weave-scope
+
+REM Install configmaps for application configuration
+kubectl create configmap kafka-config -n jx-production --from-literal=kafka.topic=sncfReaderProduction --from-literal=kafka.url=kafka-cp-kafka.kafka.svc.cluster.local:9092
+kubectl create configmap kafka-config -n jx-staging --from-literal=kafka.topic=sncfReaderStaging --from-literal=kafka.url=kafka-cp-kafka.kafka.svc.cluster.local:9092
