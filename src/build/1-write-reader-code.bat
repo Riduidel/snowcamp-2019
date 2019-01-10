@@ -11,5 +11,5 @@ git -C %TIMESHEET_HOME% checkout -b PR-1-working-version
 robocopy %SCRIPT_PATH%reference\sncf-reader %TIMESHEET_HOME% /mir /xf /xx
 git -C %TIMESHEET_HOME% add --all
 git -C %TIMESHEET_HOME% commit -m "A working version !"
-git -C %TIMEHSEET_HOME% push -u origin PR-1-working-version
+git -C %TIMESHEET_HOME% push -u origin PR-1-working-version
 popd
