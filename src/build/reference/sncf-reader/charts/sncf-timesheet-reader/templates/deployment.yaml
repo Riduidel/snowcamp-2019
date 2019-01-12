@@ -49,4 +49,9 @@ spec:
                 name: kafka-config
                 # Specify the key associated with the value
                 key: kafka.topic
+          - name: SNCF_READER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: navitia
+                key: navitia
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
