@@ -49,9 +49,17 @@ spec:
                 name: kafka-config
                 # Specify the key associated with the value
                 key: kafka.topic
+          # Define the environment variable
+          - name: SNCF_READER_KAFKA_BOOTSTRAP_SERVER
+            valueFrom:
+              configMapKeyRef:
+                # The ConfigMap containing the value you want to assign to SPECIAL_LEVEL_KEY
+                name: kafka-config
+                # Specify the key associated with the value
+                key: kafka.url
           - name: SNCF_READER_TOKEN
             valueFrom:
               secretKeyRef:
-                name: navitia
-                key: navitia
+                name: navitia-token
+                key: SNCF_READER_TOKEN
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
