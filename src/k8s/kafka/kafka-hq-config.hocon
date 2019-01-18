@@ -1,0 +1,9 @@
+{
+  kafka {
+    connections {
+      plaintext {
+          bootstrap.servers: "kafka-cp-kafka.kafka.svc.cluster.local:9092"
+      }
+    }
+  }
+}
