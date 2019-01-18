@@ -1,0 +1,12 @@
+{
+    "name": "elasticsearch-sink",
+    "config": {
+        "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+        "tasks.max": "1",
+        "topics": "sncfReaderPreview, sncfRedearStaging, sncdReaderProduction",
+        "topic.index.map": "sncfReaderPreview:timesheets_preview, sncfRedearStaging:timesheets_staging, sncdReaderProduction:timesheets_production",
+        "key.ignore": true,
+        "connection.url": "http://elasticsearch-client.elastic.svc.cluster.local:9200",
+        "type.name": "kafka-connect"
+    }
+}
