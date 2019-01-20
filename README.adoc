@@ -1,0 +1,22 @@
+# Avoir un train à l'heure, c'est kafkaïen
+> Repository principal de notre présentation à Snowcamp 2019
+
+Ce repository contient l'ensemble des éléments présentés au snowcamp. L'objectif est d'avoir une présentation "all-in",a vec l'ensemble des scripts utilisables en cours de présentation pour les démos.
+
+## Installation
+
+1. Installer la ligne de commande jenkins-x
+2. Lancer `mvn package`
+3. La version complète de la présentation est dans http://target/asciidoc/slides/index.html[`target/asciidoc/slides/index.html`]
+
+## Meta
+
+Nicolas Delsaux – https://twitter.com/Riduidel[@Riduidel]
+
+## Contributing
+
+1. Fork it (<https://github.com/Riduidel/snowcamp-2019/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
