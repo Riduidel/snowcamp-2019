@@ -393,7 +393,7 @@ include::../../build/0-install.bat[lines=25]
 
 [source]
 ----
-kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave-scope-weave-scope -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18080:4040
+kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave-scope-weave-scope -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18280:4040
 ----
 
 [NOTE.speaker]
