@@ -2,7 +2,11 @@
 :revealjs_history: true
 :revealjs_previewLinks: true
 
-= Snowcamp 2018
+= Avoir un train à l'heure, c'est kafkaïen
+[NOTE.speaker]
+--
+**Logan**
+--
 
 == Nous
 
@@ -11,6 +15,9 @@
 
 [NOTE.speaker]
 --
+**Nicolas** se présente.
+**Logan** se présente et enchaîne.
+
 Donc on est tous les deux du Nord.
 Mais Logan vient de Douai.
 Comment il va à Lille ? Ben en train, parce que l'autoroute est à peu près inutile.
@@ -23,6 +30,7 @@ Et vous ? (enchaînement)
 
 [NOTE.speaker]
 --
+**Logan**
 Les images de Raildar sont carrément à la bourre, et c'est dommage. 
 Mais quand même, il y a des trains qui sont un peu (ou beaucoup) en retard.
 Est-ce qu'on peut faire aussi bien que Raildar ? Voire même mieux ?
@@ -36,6 +44,7 @@ Est-ce qu'on peut faire aussi bien que Raildar ? Voire même mieux ?
 
 [NOTE.speaker]
 --
+**Logan**
 Est-ce qu'on peut faire aussi bien que cette application indienne ?
 --
 
@@ -45,6 +54,7 @@ image::images/DIGITALSNCF.png[background, size=cover]
 
 [NOTE.speaker]
 --
+**Logan**
 Grâce à l'OpenData, la SNCF nous "garantit" un accès à ses données.
 En fait, l'accès utilise l'API Navitia, implémentée pour la plupart des transports urbains.
 Donc ce qu'on va montrer là peut, plus ou moins, être appliqué pour les transports urbains (donc les bus par exemple).
@@ -61,6 +71,8 @@ Qu'est-ce qu'on peut en faire ?
 
 [NOTE.speaker]
 --
+**Logan**
+
 * Un bête script en console pour afficher l'horaire de mon train ? Mouais ... sympa, mais
 ** En public, c'est pas très impressionant
 ** Ca n'est pas le sujet de notre conférence
@@ -71,19 +83,25 @@ Qu'est-ce qu'on peut en faire ?
 --
 
 
-== Comment déployer notre appli ?
+== Quels prérequis à notre appli ?
 
 * Il nous faut des serveurs
 * Il faut transformer nos données
 * Il faut rechercher dans nos données
 
+[NOTE.speaker]
+--
+**Logan**
+--
 === Il nous faut des serveurs
 
 image::images/kubernetes.png[]
 
 [NOTE.speaker]
 --
-On est en 2019 (et Bonne Année), donc on ne va pas déployer une application natie sur une machine physique.
+**Nicolas**
+
+On est en 2019 (et Bonne Année), donc on ne va pas déployer une application native sur une machine physique.
 Non. 
 Comme on est jeunes et modernes, on va faire des conteneurs qu'on va déployer dans un environnement facile à exploiter.
 Et pour ça, le marché a voté (comme toujours avec ses pieds) et a choisi Kubernetes.
@@ -96,12 +114,14 @@ image::images/kube-layers.png[]
 
 [NOTE.speaker]
 --
+**Nicolas**
+
 Kubernetes fournit un moyen de déployer facilement nos conteneurs Docker et d'y accéder, 
 mais pas seulement.
 Kubernetes fournit aussi le moyen de décrire son environnement à travers des fichiers YAML, 
 et s'occupe de vérifier que le YAML que le développeur écrit est correctement déployé sur le cluster.
 Kubernetes fournit enfin le moyen à certains conteneurs privilégiés d'opérer sur le cluster.
-Ces conteneurs sont des opérateurs Kubernetes. on trouve par exemple 
+On les appelle des **opérateurs**. On trouve par exemple 
 
 * Istio et les services meshes
 * Couchbase, kafka, ElasticSearch et toutes les autres bases de données
@@ -109,12 +129,15 @@ Ces conteneurs sont des opérateurs Kubernetes. on trouve par exemple
 * Weave Flux, jenkins-X comme opérateurs CI/CD
 --
 
+
 == Il faut déployer nos applications
 
 **TODO Illustration CI/CD avec K8s**
 
 [NOTE.speaker]
 --
+**Nicolas**
+
 En 2019, on ne veut plus développer notre application, et la déployer après 3 mois de code.
 On veut pouvoir itérer rapidement.
 
@@ -136,6 +159,8 @@ Coup de bol, c'est ce qu'apporte Jenkins-X !
 
 [NOTE.speaker]
 --
+**Nicolas**
+
 On pourrait parfaitement mettre Jenkins en amont de notre environnement Kubernetes et pousser des images validées.
 Alors pourquoi utiliser plutôt un opérateur ?
 
@@ -157,6 +182,8 @@ Il est donc facile de paralléliser le test des différents composants sur un en
 
 [NOTE.speaker]
 --
+**Nicolas**
+
 La grosse contrainte de GKE, c'est qu'il faut une autorisation Google, qu'on obtient à travers un navigateur.
 Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique (ce qui exclut la VM headless GCE).
 
@@ -179,6 +206,8 @@ include::../../build/0-install.bat[lines=2]
 
 [NOTE.speaker]
 --
+**Nicolas**
+
 Les outils installés sont
 
 [source]
@@ -201,9 +230,11 @@ Avec en bonus un petit tour sur l'environnement de prod accessible dans GitHub :
 
 == Il faut transformer les données
 
+image::images/stream_pipes.png[]
+
 [NOTE.speaker]
 --
-TODO Logan, tu peux jeter un oeil ?
+**Logan**
 
 Il faut absolument s'appuyer sur les notions mentionnées dans https://www.confluent.io/blog/apache-kafka-samza-and-the-unix-philosophy-of-distributed-data/
 
@@ -217,6 +248,11 @@ Kafka est un journal immutable distribué.
 * Un producteur peut ajouter une entrée dans ce journal
 * Un consomateur peut lire le contenu de ce journal
 
+[NOTE.speaker]
+--
+**Logan**
+--
+
 === Fonctionnellement ?
 
 Kafka est un broker distribué supportant plusieurs paradigmes
@@ -227,12 +263,26 @@ Kafka est un broker distribué supportant plusieurs paradigmes
 
 Ca influe sur la rapidité et la fiabilité du cluster
 
+
+[NOTE.speaker]
+--
+**Logan**
+
+Comme Kafka est simple fonctionnellement, un écosystème s'est construit autour pour mieux gérer certains aspects.
+On va utiliser dans cette démo Kafka Connect, mais il faut aussi mentionner
+
+* Kafka Streams
+* KSQL
+* Kafka Schema Registry
+--
+
 === Allons-y !
 
 On installe Kafka avec Helm ... Comme ça
 
 [WARNING]
 --
+**Nicolas ?**
 Il y a plusieurs charts Helm Kafka. Et celui fourni par Bitnami ne contient que Kafka et Zookeeper.
 Or on veut plus que ça.
 Il faut donc utiliser le chart https://docs.confluent.io/current/installation/installing_cp/cp-helm-charts/docs/index.html[fourni par Confluent]
@@ -263,6 +313,7 @@ kubectl port-forward --namespace kafka kafka-connect-ui 28002:8000
 
 [NOTE.speaker]
 --
+**Nicolas**
 Installer Elastic avec Helm
 
 [source,bat]
@@ -277,11 +328,35 @@ include::../../build/0-install.bat[lines=17..22]
 * Moteur de recherche distribué basé sur Lucene
 * Accessible via une API HTTP
 
+[NOTE.speaker]
+--
+**Nicolas**
+Accéder à Elastic
+
+[source]
+----
+kubectl port-forward --namespace elastic (kubectl get pod --namespace elastic --selector="app=elasticsearch,release=elasticsearch,component=client" --output jsonpath='{.items[0].metadata.name}') 18180:9200
+----
+
+--
+
 === Kibana
 
 * Interface de visualisation des documents stockés dans Elastic
 * Facilement configurable
 * Utilisable dans une application web publique
+
+[NOTE.speaker]
+--
+**Nicolas**
+Accéder à l'interface de Kibana
+
+[source]
+----
+kubectl port-forward --namespace elastic (kubectl get pod --namespace elastic --selector="app=kibana,release=kibana" --output jsonpath='{.items[0].metadata.name}') 18181:5601
+ ----
+
+--
 
 === Connecter Kafka à Elastic
 
@@ -289,6 +364,7 @@ Avec l'https://docs.confluent.io/current/connect/references/restapi.html[interfa
 
 [NOTE.speaker]
 --
+**Logan**
 Donc on forwarde le port de kafka-connect localement
 
 [source]
@@ -300,7 +376,7 @@ Et on envoie la patate avec curl
 
 [source]
 ----
-curl -v -X POST --data "@src/k8s/kafka/kafka-connect-elastic-test.json" -H "Content-Type: application/json" http://localhost:18083/connectors
+curl -v -X POST --data "@src/k8s/kafka/kafka-connect-elastic.json" -H "Content-Type: application/json" http://localhost:18083/connectors
 ----
 --
 
@@ -309,6 +385,7 @@ curl -v -X POST --data "@src/k8s/kafka/kafka-connect-elastic-test.json" -H "Cont
 Démonstration avec Weave Scope !
 
 [source,bat]
+**Nicolas**
 ----
 include::../../build/0-install.bat[lines=25]
 ----
@@ -320,11 +397,25 @@ kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave
 
 == Et si on codait quelque chose ?
 
-=== Par exemple une application qui lit les données depuis Navitia
+Par exemple une application qui lit les données depuis Navitia
 
 [NOTE.speaker]
 --
-D'abrod on crée l'application
+**Logan**
+--
+
+
+=== D'abord on crée l'application
+
+[source]
+----
+jx create quickstart 
+----
+
+[NOTE.speaker]
+--
+**Nicolas**
+D'abord on crée l'application
 
 [source]
 ----
@@ -343,4 +434,92 @@ A la fin, on a
 1. Un repository GitHub ( https://github.com/Zenika/snowcamp-2019-sncf-timesheet-reader)
 2. un projet Jenkins ( http://jenkins.jx.35.240.72.245.nip.io/job/Zenika/job/snowcamp-2019-sncf-timesheet-reader/)
 
-Là, TODO il faut cherry-picker la version "qui marche" dans la version officielle
+Et ensuite, on inejcte le code avec la commande `1-write-reader-code.bat` (qui inclut la gestion des secrets et de la config)
+
+Pendant que Jenkins builde la pull request, on parle de la configuration
+--
+
+=== Comment gérer la configuration ?
+
+* ConfigMap
+* chart helm
+
+[NOTE.speaker]
+--
+**Nicolas**
+On peut facilement créer un secret dans les namespaces staging et production, mais pas dans le namespace généré pour les previews.
+Alors on fait comment ?
+Comme le chart helm des previews hérite du chart utilisé en staging et en production, 
+on peut ajouter une ConfigMap dans le chart preview !
+--
+
+=== Comment gérer les secrets ?
+
+* helm secrets ... ne marche pas
+* Mais la modification du Jenkinsfile, oui !
+
+[NOTE.speaker]
+--
+**Nicolas**
+On a un secret commun : notre clé d'API.
+Elle doit être, comme la configuration, disponible dans les trois types de namespaces.
+Malheureusement, 
+une série de bugs dans helm secrets et Jenkins-X (en particulier la gestion de fichiers partiellement chiffrés) le rend inutile dans notre cas.
+Donc il faut utiliser ... une autre méthode (qui ne sera malheureusement pas applicable pour, par exemple, des accès de base de données différents pour les différents types de déploiement).
+En l'occurence, comme on peut éditer le `Jenkinsfile`, on peut y ajouter la copie du secret d'un namespace à un autre au début du déploiement du chart.
+
+Evidement, dans une vision plus complète, il serait bien d'utiliser Vault, qui permet d'avoir le secret correctement associé au pod.
+--
+
+=== !
+
+image::images/environments.png[]
+
+[NOTE.speaker]
+--
+**Nicolas**
+Dans la démo, on merge la pull request et on observe que l'environnement staging est bien rebuildé avec la nouvelle version.
+Et de la même manière, en faisant un `jx promote`, on fait passer l'application en production.
+--
+
+== Qu'est-ce qu'on a ?
+
+* Une application déployée dans un environnement de test
+* Du contenu poussé à travers Kafka dans Elastic
+
+[NOTE.speaker]
+--
+**Logan**
+Notre application est accessible par `jx open ...`.
+Cette application permet, en accédant à `sncf/routes?reload` de charger les horaires SNCF dans Elastic.
+On peut en voir le contenu dans Kibana.
+--
+
+== Et ensuite ?
+
+* Et si on créait une application web pour rechercher nos horaires ?
+
+[NOTE.speaker]
+--
+**Nicolas**
+Avec `jx create quickstart`, on peut aussi créer une application node, pratique pour notre page de recherche des gares et des horaires.
+--
+
+== Conclusion
+
+* Kubernetes, Kafka et Elastic sont des technologies fiables, utilisables dans vos projets facilement
+* Jenkins-X permet facilement de déployer des applications dans des infrastructures modernes
+
+[NOTE.speaker]
+--
+**Logan**
+--
+
+=== Merci !
+
+image::images/questions.gif[background, size=cover]
+
+[NOTE.speaker]
+--
+**Nicolas**
+--
