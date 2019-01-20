@@ -1,6 +1,7 @@
 :icons: font
 :revealjs_history: true
 :revealjs_previewLinks: true
+:customcss: index.css
 
 = Avoir un train à l'heure, c'est kafkaïen
 
@@ -12,7 +13,10 @@
 == Nous
 
 * Nicolas Delsaux / @riduidel sur https://twitter.com/riduidel[icon:twitter[]] / https://github.com/riduidel[icon:github[]] / https://stackexchange.com/users/8620[icon:stack-overflow[]]
-* Logan Hauspie / @lhauspie sur https://twitter.com/lhauspie[icon:twitter[]] / https://github.com/lhauspie[icon:github[]]
+* Logan Hauspie / @lhauspie sur https://twitter.com/lhauspie[icon:twitter[]] / https://github.com/lhauspie[icon:github[]] / https://stackoverflow.com/users/2190096[icon:stack-overflow[]]
+
+[.unbordered]
+image::images/zenika.png[Zenika,200,200]
 
 [NOTE.speaker]
 --
@@ -65,7 +69,7 @@ Qu'est-ce qu'on peut en faire ?
 === Que faire de ces données ?
 
 * Un bête script en console pour afficher l'horaire de mon train ?
-** Il y a  http://weboob.org/applications/traveloob[WeBoob]
+** Il y a  http://weboob.org/applications/traveloob[WebOOB]
 * Un moteur de recherche d'horaires de train pour savoir à quelle heure passe le train
 ** Il y a https://www.horairetrain.fr[HoraireTrain]
 * OK, et si on faisait une appli qui donne le retard des trains crowdsourcés ?
@@ -281,6 +285,7 @@ On va utiliser dans cette démo Kafka Connect, mais il faut aussi mentionner
 
 On installe Kafka avec Helm ... Comme ça
 
+[NOTE.speaker]
 [WARNING]
 --
 **Nicolas ?**
