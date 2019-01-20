@@ -16,7 +16,7 @@
 		<asciidoctorj.diagram.version>1.5.11</asciidoctorj.diagram.version>
 		<jruby.version>9.2.4.0</jruby.version>
 		<revealjs.version>3.6.0</revealjs.version>
-		<asciidoctor-revealjs.version>master</asciidoctor-revealjs.version>
+		<asciidoctor-revealjs.version>1.0.4</asciidoctor-revealjs.version>
 		<asciidoc.source.docs.directory>src/docs/asciidoc</asciidoc.source.docs.directory>
 		<asciidoc.target.docs.directory>${project.build.directory}/asciidoc/docs</asciidoc.target.docs.directory>
 		<asciidoc.source.slides.directory>src/slides/asciidoc</asciidoc.source.slides.directory>
@@ -201,7 +201,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>https://github.com/asciidoctor/asciidoctor-reveal.js/archive/${asciidoctor-revealjs.version}.zip</url>
+									<url>https://github.com/asciidoctor/asciidoctor-reveal.js/archive/v${asciidoctor-revealjs.version}.zip</url>
 									<unpack>true</unpack>
 									<outputFileName>asciidoctor-reveal.js-${asciidoctor-revealjs.version}.zip</outputFileName>
 									<outputDirectory>${project.build.directory}</outputDirectory>

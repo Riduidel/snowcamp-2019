@@ -3,6 +3,7 @@
 :revealjs_previewLinks: true
 
 = Avoir un train à l'heure, c'est kafkaïen
+
 [NOTE.speaker]
 --
 **Logan**
