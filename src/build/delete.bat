@@ -6,3 +6,5 @@ curl -X DELETE -H "Authorization: token %GIT_ACCESS_TOKEN%" https://api.github.c
 curl -X DELETE -H "Authorization: token %GIT_ACCESS_TOKEN%" https://api.github.com/repos/Zenika/snowcamp-2019-sncf-timesheet-reader
 
 REM delete the environments
+curl -X DELETE -H "Authorization: token %GIT_ACCESS_TOKEN%" https://api.github.com/repos/Zenika/environment-snowcamp-2019-production
+curl -X DELETE -H "Authorization: token %GIT_ACCESS_TOKEN%" https://api.github.com/repos/Zenika/environment-snowcamp-2019-staging
