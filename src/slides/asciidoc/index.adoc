@@ -322,6 +322,7 @@ include::../../build/0-install.bat[lines=17..22]
 ----
 
 --
+
 === Elastic
 
 * Base de données NoSQL orientée documents
@@ -354,7 +355,7 @@ Accéder à l'interface de Kibana
 [source]
 ----
 kubectl port-forward --namespace elastic (kubectl get pod --namespace elastic --selector="app=kibana,release=kibana" --output jsonpath='{.items[0].metadata.name}') 18181:5601
- ----
+----
 
 --
 
@@ -385,7 +386,6 @@ curl -v -X POST --data "@src/k8s/kafka/kafka-connect-elastic.json" -H "Content-T
 Démonstration avec Weave Scope !
 
 [source,bat]
-**Nicolas**
 ----
 include::../../build/0-install.bat[lines=25]
 ----
@@ -394,6 +394,11 @@ include::../../build/0-install.bat[lines=25]
 ----
 kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave-scope-weave-scope -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18080:4040
 ----
+
+[NOTE.speaker]
+--
+**Nicolas**
+--
 
 == Et si on codait quelque chose ?
 
