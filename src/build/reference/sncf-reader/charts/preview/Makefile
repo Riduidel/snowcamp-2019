@@ -4,12 +4,12 @@ preview:
 ifeq ($(OS),Darwin)
 	sed -i "" -e "s/version:.*/version: $(PREVIEW_VERSION)/" Chart.yaml
 	sed -i "" -e "s/version:.*/version: $(PREVIEW_VERSION)/" ../*/Chart.yaml
-	sed -i "" -e "s/tag: .*/tag: $(PREVIEW_VERSION)/" values.yaml
+	sed -i "" -e "s/tag:.*/tag: $(PREVIEW_VERSION)/" values.yaml
 else ifeq ($(OS),Linux)
 	sed -i -e "s/version:.*/version: $(PREVIEW_VERSION)/" Chart.yaml
 	sed -i -e "s/version:.*/version: $(PREVIEW_VERSION)/" ../*/Chart.yaml
-	sed -i -e "s|repository: .*|repository: $(DOCKER_REGISTRY)\/zenika\/sncf-timesheet-reader|" values.yaml
-	sed -i -e "s/tag: .*/tag: $(PREVIEW_VERSION)/" values.yaml
+	sed -i -e "s|repository:.*|repository: $(DOCKER_REGISTRY)\/zenika\/snowcamp-2019-sncf-timesheet-reader|" values.yaml
+	sed -i -e "s/tag:.*/tag: $(PREVIEW_VERSION)/" values.yaml
 else
 	echo "platfrom $(OS) not supported to release from"
 	exit -1
