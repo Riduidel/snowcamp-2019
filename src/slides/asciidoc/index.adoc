@@ -21,6 +21,8 @@ image::images/snowcamp.png[Snowcamp,300]
 * Nicolas Delsaux / @riduidel sur https://twitter.com/riduidel[icon:twitter[]] / https://github.com/riduidel[icon:github[]] / https://stackexchange.com/users/8620[icon:stack-overflow[]]
 * Logan Hauspie / @lhauspie sur https://twitter.com/lhauspie[icon:twitter[]] / https://github.com/lhauspie[icon:github[]] / https://stackoverflow.com/users/2190096[icon:stack-overflow[]]
 
+&nbsp;  
+
 [.unbordered]
 image::images/zenika.png[Zenika,200,200]
 
