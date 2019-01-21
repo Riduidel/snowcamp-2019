@@ -288,7 +288,7 @@ On installe Kafka avec Helm ... Comme ça
 [NOTE.speaker]
 [WARNING]
 --
-**Nicolas ?**
+**Nicolas**
 Il y a plusieurs charts Helm Kafka. Et celui fourni par Bitnami ne contient que Kafka et Zookeeper.
 Or on veut plus que ça.
 Il faut donc utiliser le chart https://docs.confluent.io/current/installation/installing_cp/cp-helm-charts/docs/index.html[fourni par Confluent]
