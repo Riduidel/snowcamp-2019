@@ -1,0 +1,6 @@
+/* override revealjs style on img */
+.unbordered img {
+    border: 0px !important;
+    background: rgba(255, 255, 255, 0) !important;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0) !important;
+}
