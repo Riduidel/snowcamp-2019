@@ -9,5 +9,5 @@ dependencies:
   repository: https://chartmuseum.build.cd.jenkins-x.io
   version: 2.3.56
 - alias: preview
-  name: sncf-timesheet-reader
-  repository: file://../sncf-timesheet-reader
+  name: snowcamp-2019-sncf-timesheet-reader
+  repository: file://../snowcamp-2019-sncf-timesheet-reader
