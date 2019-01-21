@@ -4,6 +4,12 @@
 :customcss: index.css
 
 = Avoir un train à l'heure, c'est kafkaïen
+  
+&nbsp;  
+
+&nbsp;  
+[.unbordered]
+image::images/snowcamp.png[Snowcamp,300]
 
 [NOTE.speaker]
 --
