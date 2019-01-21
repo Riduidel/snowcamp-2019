@@ -9,9 +9,9 @@ helm repo update
 helm install confluent/cp-helm-charts --name kafka --namespace kafka
 
 REM install some Kafka clients
-kubectl apply -f ../k8s/kafka/kafka-client.yml
-kubectl apply -f ../k8s/kafka/kafka-topics-ui.yml
-kubectl apply -f ../k8s/kafka/kafka-connect-ui.yml
+kubectl apply -f src/k8s/kafka/kafka-client.yml
+kubectl apply -f src/k8s/kafka/kafka-topics-ui.yml
+kubectl apply -f src/k8s/kafka/kafka-connect-ui.yml
 
 REM Install Elastic
 helm repo add elastic https://helm.elastic.co
