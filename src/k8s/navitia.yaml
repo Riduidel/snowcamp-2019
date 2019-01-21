@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  SNCF_READER_TOKEN: YTE0ODA0MzQtNGU3Zi00YmYzLWIyODctNGI4NGJiNmVhY2Qz
+kind: Secret
+metadata:
+  name: navitia-token
+type: Opaque

@@ -27,3 +27,8 @@ helm install stable/weave-scope --namespace weave-scope --name weave-scope
 REM Install configmaps for application configuration
 kubectl create configmap kafka-config -n jx-production --from-literal=kafka.topic=sncfReaderProduction --from-literal=kafka.url=kafka-cp-kafka.kafka.svc.cluster.local:9092
 kubectl create configmap kafka-config -n jx-staging --from-literal=kafka.topic=sncfReaderStaging --from-literal=kafka.url=kafka-cp-kafka.kafka.svc.cluster.local:9092
+
+kubectl create namespace configuration
+kubectl create -f src\k8s\navitia.yaml  -n configuration
+kubectl get secret navitia-token --namespace=configuration --export -o yaml | kubectl apply --namespace=jx-staging -f -
+kubectl get secret navitia-token --namespace=configuration --export -o yaml | kubectl apply --namespace=jx-production -f -
