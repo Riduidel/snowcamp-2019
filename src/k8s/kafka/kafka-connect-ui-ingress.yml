@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kafka-connect-ui-ingress
+  namespace: kafka
+spec:
+  rules:
+  - host: kafka-connect-ui.jx.34.76.21.136.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: kafka-connect-ui
+          servicePort: 8000
+        path: /

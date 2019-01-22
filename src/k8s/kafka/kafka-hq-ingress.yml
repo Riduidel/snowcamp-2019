@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kafka-hq-ingress
+  namespace: kafka
+spec:
+  rules:
+  - host: kafka-hq.jx.34.76.21.136.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: kafka-hq
+          servicePort: 8080
+        path: /

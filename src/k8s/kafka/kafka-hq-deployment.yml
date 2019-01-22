@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: kafka-hq
+  name: kafka-hq
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: kafka-hq
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: kafka-hq
+    spec:
+      volumes:
+        - name: config-volume
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: kafka-hq-config
+      containers:
+      - name: kafka-hq
+        image: tchiotludo/kafkahq
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/application.conf
+          subPath: application.conf
+status: {}

@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: kafka-connect-ui
+  name: kafka-connect-ui
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: kafka-connect-ui
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: kafka-connect-ui
+    spec:
+      containers:
+      - name: kafka-connect-ui
+        image: landoop/kafka-connect-ui
+        env:
+        - name: CONNECT_URL
+          value: http://kafka-cp-kafka-connect:8083
+        ports:
+        - containerPort: 8000
+          name: connect-ui
+          protocol: TCP
+status: {}
