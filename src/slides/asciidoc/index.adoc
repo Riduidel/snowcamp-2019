@@ -145,7 +145,8 @@ On les appelle des **opérateurs**. On trouve par exemple
 
 == Il faut déployer nos applications
 
-**TODO Illustration CI/CD avec K8s**
+[.unbordered]
+image::images/devops.png[CI/CD,700]
 
 [NOTE.speaker]
 --
