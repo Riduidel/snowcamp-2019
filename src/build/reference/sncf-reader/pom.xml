@@ -201,6 +201,7 @@
 								<arg>-DSNCF_READER_LIMIT_ROUTES_DOWNLOAD=10</arg>
 								<arg>-DSNCF_READER_TOPIC_SCHEDULE=sncfReaderSchedule</arg>
 								<arg>-DSNCF_READER_KAFKA_BOOTSTRAP_SERVER=localhost:49092</arg>
+								<arg>-DSNCF_READER_BACKUP_DIR=backup</arg>
 							</jvmArgs>
 							<redeploy>true</redeploy>
 						</configuration>
