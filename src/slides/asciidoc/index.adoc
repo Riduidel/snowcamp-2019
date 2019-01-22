@@ -201,35 +201,6 @@ Ensuite, comme on va le voir plus tard, Jenkins-X fournit un déploiement par pu
 Il est donc facile de paralléliser le test des différents composants sur un environnement conforme à la prod.
 --
 
-=== Installer Kubernetes avec Jenkins-X
-
-* Installer la ligne de commande `jx` sur une machine
-* Créer le cluster Kubernetes 
-** Répondre à quelques questions
-** Attendre 5 minutes 
-
-[NOTE.speaker]
---
-**Nicolas**
-
-La grosse contrainte de GKE, c'est qu'il faut une autorisation Google, qu'on obtient à travers un navigateur.
-Il faut donc exécuter `jx` sur une machine disposant d'une interface graphique (ce qui exclut la VM headless GCE).
-
-[source,sh]
-----
-include::../../build/0-install.sh[lines=3]
-----
-
-
-ou sous Windows
-
-[source,bat]
-----
-include::../../build/0-install.bat[lines=2]
-----
-
---
-
 === Démo
 
 [NOTE.speaker]
@@ -251,8 +222,6 @@ nexus                     http://nexus.jx.35.190.213.22.nip.io
 ----
 
 Avec en bonus un petit tour sur l'environnement de prod accessible dans GitHub : https://github.com/Zenika/environment-snowcamp-2019-production
-
-**NE PAS OUBLIER HELM**
 --
 
 
@@ -271,7 +240,7 @@ Un article plutôt bon pour synthétiser https://www.elastic.co/fr/blog/just-eno
 
 === Techniquement ?
 
-Kafka est un journal immutable distribué.
+Kafka est un journal immutable **distribué**.
 
 * Un producteur peut ajouter une entrée dans ce journal
 * Un consomateur peut lire le contenu de ce journal
@@ -285,6 +254,7 @@ Kafka est un journal immutable distribué.
 
 Kafka est un broker distribué supportant plusieurs paradigmes
 
+[%step]
 * At most once
 * Exactly once
 * At least once
@@ -304,70 +274,21 @@ On va utiliser dans cette démo Kafka Connect, mais il faut aussi mentionner
 * Kafka Schema Registry
 --
 
-=== Allons-y !
-
-On installe Kafka avec Helm ... Comme ça
-
-[NOTE.speaker]
-[WARNING]
---
-**Nicolas**
-Il y a plusieurs charts Helm Kafka. Et celui fourni par Bitnami ne contient que Kafka et Zookeeper.
-Or on veut plus que ça.
-Il faut donc utiliser le chart https://docs.confluent.io/current/installation/installing_cp/cp-helm-charts/docs/index.html[fourni par Confluent]
---
-
-[source,bat]
-----
-include::../../build/0-install.bat[lines=6..9]
-----
-
-Et il faut ajouter un client Kafka 
-et quelques interfaces (Topics UI, Connect UI)
-
-[source,bat]
-----
-include::../../build/0-install.bat[lines=12..14]
-----
-
-Les accès se font via des `port-forward` :
-
-[source]
-----
-kubectl port-forward --namespace kafka kafka-topics-ui 28001:8000
-kubectl port-forward --namespace kafka kafka-connect-ui 28002:8000
-----
-
 == Il faut rechercher les données
 
 [NOTE.speaker]
 --
 **Nicolas**
-Installer Elastic avec Helm
-
-[source,bat]
-----
-include::../../build/0-install.bat[lines=17..22]
-----
-
 --
 
 === Elastic
 
-* Base de données NoSQL orientée documents
 * Moteur de recherche distribué basé sur Lucene
 * Accessible via une API HTTP
 
 [NOTE.speaker]
 --
 **Nicolas**
-Accéder à Elastic
-
-[source]
-----
-kubectl port-forward --namespace elastic (kubectl get pod --namespace elastic --selector="app=elasticsearch,release=elasticsearch,component=client" --output jsonpath='{.items[0].metadata.name}') 18180:9200
-----
-
 --
 
 === Kibana
@@ -379,22 +300,25 @@ kubectl port-forward --namespace elastic (kubectl get pod --namespace elastic --
 [NOTE.speaker]
 --
 **Nicolas**
-Accéder à l'interface de Kibana
-
-[source]
-----
-kubectl port-forward --namespace elastic (kubectl get pod --namespace elastic --selector="app=kibana,release=kibana" --output jsonpath='{.items[0].metadata.name}') 18181:5601
-----
-
 --
 
 === Connecter Kafka à Elastic
 
-Avec l'https://docs.confluent.io/current/connect/references/restapi.html[interface REST de Kafka Connect] !
+Avec Kafka Connect !
 
 [NOTE.speaker]
 --
 **Logan**
+
+Avec kafka-connect, on peut soit injecter des données dans Kafka
+soit lire des données depuis Kafka.
+Nous voulons pousser le contenu de Kafka pour le pousser dans ElasticSearch.
+Heureusement, Confluent fournit un connecteur dédié à cet usage.
+
+Démonstration dans l'interface http://kafka-connect-ui.jx.34.76.21.136.nip.io/#/cluster/kafka-connect-1[kafka-connect-ui]
+
+**Procédure d'installtion** 
+Ca n'est pas à dire dans la présentation.
 Donc on forwarde le port de kafka-connect localement
 
 [source]
@@ -436,6 +360,8 @@ Par exemple une application qui lit les données depuis Navitia
 [NOTE.speaker]
 --
 **Logan**
+
+Cette application va simplement lire les horaires de train de navitia pour les pousser dans Kafka.
 --
 
 
@@ -469,6 +395,16 @@ A la fin, on a
 2. un projet Jenkins ( http://jenkins.jx.35.240.72.245.nip.io/job/Zenika/job/snowcamp-2019-sncf-timesheet-reader/)
 
 Et ensuite, on inejcte le code avec la commande `1-write-reader-code.bat` (qui inclut la gestion des secrets et de la config)
+--
+
+=== Puis on écrit un peu de code
+
+[NOTE.speaker]
+--
+**Nicolas**
+Lancer le script `src\build\1-write-reader-code.bat`
+Il crée une branche avec du vrai code.
+Il faut ensuite faire la pull request et laisser Jenkins la builder.
 
 Pendant que Jenkins builde la pull request, on parle de la configuration
 --
@@ -512,6 +448,8 @@ image::images/environments.png[]
 [NOTE.speaker]
 --
 **Nicolas**
+Résumé
+
 Dans la démo, on merge la pull request et on observe que l'environnement staging est bien rebuildé avec la nouvelle version.
 Et de la même manière, en faisant un `jx promote`, on fait passer l'application en production.
 --
@@ -541,7 +479,7 @@ Avec `jx create quickstart`, on peut aussi créer une application node, pratique
 
 == Conclusion
 
-* Kubernetes, Kafka et Elastic sont des technologies fiables, utilisables dans vos projets facilement
+* Kubernetes, Kafka et Elastic sont des technologies fiables et éprouvées.
 * Jenkins-X permet facilement de déployer des applications dans des infrastructures modernes
 
 [NOTE.speaker]
