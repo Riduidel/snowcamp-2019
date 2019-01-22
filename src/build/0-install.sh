@@ -8,17 +8,28 @@ helm repo update
 helm install confluent/cp-helm-charts --name kafka --namespace kafka
 
 # install some Kafka clients
-kubectl apply -f ../k8s/kafka/kafka-client.yml
-kubectl apply -f ../k8s/kafka/kafka-topics-ui.yml
-kubectl apply -f ../k8s/kafka/kafka-connect-ui.yml
+kubectl create configmap kafka-hq-config --namespace kafka --from-file=application.conf=src\k8s\kafka\kafka-hq-config.hocon
+kubectl apply -f src/k8s/kafka/kafka-client.yml
+kubectl apply -f src/k8s/kafka/kafka-topics-ui.yml
+kubectl apply -f src/k8s/kafka/kafka-connect-ui.yml
+kubectl apply -f src/k8s/kafka/kafka-hq.yml
 
 # Install Elastic
 helm repo add elastic https://helm.elastic.co
 helm repo update
-helm install --namespace elastic --name elasticsearch stable/elasticsearch
+helm install stable/elasticsearch --namespace elastic --name elasticsearch --set imageTag=6.5.4
 # (voir https://github.com/elastic/helm-charts/blob/6.5.2-alpha1/elasticsearch/README.md)
-helm install --namespace elastic  --name kibana elastic/kibana --set elasticSearchURL=http://elasticsearch-master.elastic.svc.cluster.local:9200
+helm install elastic/kibana --namespace elastic --name kibana --set imageTag=6.5.4,elasticsearchURL=http://elasticsearch-client.elastic.svc.cluster.local:9200,image=docker.elastic.co/kibana/kibana-oss
 # (voir https://github.com/elastic/helm-charts/tree/6.5.2-alpha1/kibana)
 
 # Install weave scope
 helm install stable/weave-scope --namespace weave-scope --name weave-scope
+
+# Install configmaps for application configuration
+kubectl create configmap kafka-config -n jx-production --from-literal=kafka.topic=timesheets_production --from-literal=kafka.url=kafka-cp-kafka.kafka.svc.cluster.local:9092
+kubectl create configmap kafka-config -n jx-staging --from-literal=kafka.topic=timesheets_staging --from-literal=kafka.url=kafka-cp-kafka.kafka.svc.cluster.local:9092
+
+kubectl create namespace configuration
+kubectl create -f src\k8s\navitia.yaml  -n configuration
+kubectl get secret navitia-token --namespace=configuration --export -o yaml | kubectl apply --namespace=jx-staging -f -
+kubectl get secret navitia-token --namespace=configuration --export -o yaml | kubectl apply --namespace=jx-production -f -
