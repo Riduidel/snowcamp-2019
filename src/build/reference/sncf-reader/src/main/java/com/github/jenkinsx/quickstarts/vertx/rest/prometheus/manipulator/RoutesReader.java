@@ -47,7 +47,9 @@ public class RoutesReader extends AbstractReader<RoutesResponse> {
 		super.onDownloaded(list);
 		logger.info("Downloaded routes !");
 		if(config.containsKey("SNCF_READER_LIMIT_ROUTES_DOWNLOAD")) {
-			for (int i = 0; i < config.getInteger("SNCF_READER_LIMIT_ROUTES_DOWNLOAD", 10); i++) {
+			int limitRoutesDownload = config.getInteger("SNCF_READER_LIMIT_ROUTES_DOWNLOAD", 10);
+			logger.info(String.format("We download only %d routes due to SNCF_READER_LIMIT_ROUTES_DOWNLOAD value", limitRoutesDownload));
+			for (int i = 0; i < limitRoutesDownload; i++) {
 				readRouteSchedule(list.routes.get(i));
 			}
 		} else {
@@ -69,7 +71,9 @@ public class RoutesReader extends AbstractReader<RoutesResponse> {
 				}
 				route_schedules.forEach(r -> {
 					schedules.put(route.id, r);
-					eventBus.publish(SncfReader.SNCF_READER_SCHEDULES, JsonObject.mapFrom(r));
+					JsonObject scheduleJson = JsonObject.mapFrom(r);
+					scheduleJson.put("id", route.id);
+					eventBus.publish(SncfReader.SNCF_READER_SCHEDULES, scheduleJson);
 					logger.info(String.format("Published schedule %s", r.display_informations.name));
 				});
 			}

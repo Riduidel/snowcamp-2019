@@ -44,10 +44,21 @@ public class KafkaWriter extends AbstractVerticle {
 	
 	public void onScheduleReceived(Message<JsonObject> message) {
 		JsonObject body = message.body();
-		KafkaProducerRecord<String, JsonObject> record = KafkaProducerRecord.create(config().getString("SNCF_READER_TOPIC_SCHEDULE", "sncfReaderSchedule"), body);
+		KafkaProducerRecord<String, JsonObject> record = null;
+		if(body.containsKey("id")) {
+			record = KafkaProducerRecord.create(
+					config().getString("SNCF_READER_TOPIC_SCHEDULE", "sncfReaderSchedule"), 
+					body.getString("id"),
+					body);
+		} else {
+			record = KafkaProducerRecord.create(
+					config().getString("SNCF_READER_TOPIC_SCHEDULE", "sncfReaderSchedule"), 
+					body);
+		}
+		final String key = record.key();
 		producer.write(record, done -> {
 			if(done.succeeded()) {
-				logger.debug("Written route schedule "+body.encodePrettily());
+				logger.info(String.format("Written route schedule \"%s\"", key));
 			} else  {
 				logger.warn("Unable to write route schedule "+body.encodePrettily(), done.cause());
 			}
