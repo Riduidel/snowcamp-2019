@@ -14,6 +14,19 @@ image::images/snowcamp.png[Snowcamp,300]
 [NOTE.speaker]
 --
 **Logan**
+
+Avant de démarrer, il faut
+
+. Avoir créé le projet https://github.com/Zenika/snowcamp-2019-sncf-timesheet-reader[snowcamp-2019-sncf-timesheet-reader] via jx
+. Avoir un fork sur https://github.com/Zenika/snowcamp-2019-sncf-timesheet-reader[snowcamp-2019-sncf-timesheet-reader][mon compte Github]
+. Ouvrir dans Chrome
+.. https://console.cloud.google.com/kubernetes/[GKE] sur le projet snowcamp-2019
+.. Cette présentation (en Reveal ou en Google WTF)
+.. Jenkins-X
+.. Les différents services qui seront *forcément* utilisés (pas weave-scope, par exemple)
+. Démarrer un terminal non moche (WSLTTY) dans le dossier snowcamp-2019.
+. Fermer TOUS les autres logiciels
+. Mettre un fond d'écran noir
 --
 
 == Nous
