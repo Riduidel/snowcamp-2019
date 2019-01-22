@@ -37,14 +37,14 @@ services:
     depends_on:
      - zoonavigator-api
 
-  kafka1:
+  kafka-server:
     image: confluentinc/cp-kafka:5.0.0
-    hostname: kafka1
+    hostname: kafka-server
     ports:
       - "49092:49092"
     environment:
     # Beware : LISTENER_DOCKER_EXTERNAL is sent to clients (producers, consumers), so it must contain port exposed outside Docker
-      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:49092
+      KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka-server:19092,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:49092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: LISTENER_DOCKER_INTERNAL:PLAINTEXT,LISTENER_DOCKER_EXTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: LISTENER_DOCKER_INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
@@ -52,7 +52,7 @@ services:
       KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - ${project.basedir}/target/docker-compose/full-stack/kafka1/data:/var/lib/kafka/data
+      - ${project.basedir}/target/docker-compose/full-stack/kafka-server/data:/var/lib/kafka/data
     depends_on:
       - zoo1
 
@@ -62,12 +62,12 @@ services:
     ports:
       - "48081:8081"
     environment:
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:19092
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-server:19092
       SCHEMA_REGISTRY_HOST_NAME: kafka-schema-registry
       SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
     depends_on:
       - zoo1
-      - kafka1
+      - kafka-server
 
   kafka-schema-registry-ui:
     image: landoop/schema-registry-ui:0.9.4
@@ -90,10 +90,10 @@ services:
       KAFKA_REST_LISTENERS: http://0.0.0.0:8082/
       KAFKA_REST_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081/
       KAFKA_REST_HOST_NAME: kafka-rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:19092
+      KAFKA_REST_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-server:19092
     depends_on:
       - zoo1
-      - kafka1
+      - kafka-server
       - kafka-schema-registry
 
   kafka-topics-ui:
@@ -106,7 +106,7 @@ services:
       PROXY: "true"
     depends_on:
       - zoo1
-      - kafka1
+      - kafka-server
       - kafka-schema-registry
       - kafka-rest-proxy
 
@@ -116,7 +116,7 @@ services:
     ports:
       - "48083:8083"
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: "kafka1:19092"
+      CONNECT_BOOTSTRAP_SERVERS: "kafka-server:19092"
       CONNECT_REST_PORT: 8083
       CONNECT_GROUP_ID: compose-connect-group
       CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
@@ -136,7 +136,7 @@ services:
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
     depends_on:
       - zoo1
-      - kafka1
+      - kafka-server
       - kafka-schema-registry
       - kafka-rest-proxy
 
@@ -150,3 +150,12 @@ services:
       PROXY: "true"
     depends_on:
       - kafka-connect
+      
+  kafka-hq:
+    image: tchiotludo/kafkahq
+    hostname: kafka-hq
+    ports:
+      - "48080:8080"
+    volumes:
+      - ./kafka-hq.hocon:/app/application.conf
+      
