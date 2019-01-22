@@ -71,10 +71,10 @@ Est-ce qu'on peut faire aussi bien que Raildar ? Voire même mieux ?
 [NOTE.speaker]
 --
 **Logan**
-Est-ce qu'on peut faire aussi bien que cette application indienne ?
+Est-ce qu'on peut faire aussi bien que cette application indienne ? (rachetée récement par Google)
 --
 
-== Des données !
+== Il nous faut des données !
 
 image::images/DIGITALSNCF.png[background, size=cover]
 
@@ -89,6 +89,7 @@ Qu'est-ce qu'on peut en faire ?
 
 === Que faire de ces données ?
 
+[%step]
 * Un bête script en console pour afficher l'horaire de mon train ?
 ** Il y a  http://weboob.org/applications/traveloob[WebOOB]
 * Un moteur de recherche d'horaires de train pour savoir à quelle heure passe le train
@@ -97,7 +98,7 @@ Qu'est-ce qu'on peut en faire ?
 
 [NOTE.speaker]
 --
-**Logan**
+**Nicolas** pose les questions, et **Logan** répond
 
 * Un bête script en console pour afficher l'horaire de mon train ? Mouais ... sympa, mais
 ** En public, c'est pas très impressionant
@@ -550,6 +551,7 @@ Avec `jx create quickstart`, on peut aussi créer une application node, pratique
 
 === Merci !
 
+[.stretch]
 image::images/questions.gif[background, size=cover]
 
 [NOTE.speaker]
