@@ -1,6 +1,10 @@
 package com.github.jenkinsx.quickstarts.vertx.rest.prometheus;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -44,21 +48,25 @@ public class KafkaWriter extends AbstractVerticle {
 	
 	public void onScheduleReceived(Message<JsonObject> message) {
 		JsonObject body = message.body();
-		KafkaProducerRecord<String, JsonObject> record = null;
-		if(body.containsKey("id")) {
-			record = KafkaProducerRecord.create(
-					config().getString("SNCF_READER_TOPIC_SCHEDULE", "sncfReaderSchedule"), 
-					body.getString("id"),
-					body);
-		} else {
-			record = KafkaProducerRecord.create(
-					config().getString("SNCF_READER_TOPIC_SCHEDULE", "sncfReaderSchedule"), 
-					body);
-		}
+		final String id = body.getString("id");
+		KafkaProducerRecord<String, JsonObject> record = KafkaProducerRecord.create(
+				config().getString("SNCF_READER_TOPIC_SCHEDULE", "sncfReaderSchedule"), 
+				id,
+				body);
 		final String key = record.key();
+		if(config().containsKey("SNCF_READER_BACKUP_DIR")) {
+			File backupDir = new File(config().getString("SNCF_READER_BACKUP_DIR"));
+			backupDir.mkdirs();
+			File output = new File(backupDir, id.replace(":", "_")+".json");
+			try {
+				Files.write(output.toPath(), body.encodePrettily().getBytes(), StandardOpenOption.CREATE);
+			} catch (IOException e) {
+				logger.info(String.format("Can't write file %s", output.getAbsolutePath()), e);
+			}
+		}
 		producer.write(record, done -> {
 			if(done.succeeded()) {
-				logger.info(String.format("Written route schedule \"%s\"", key));
+				logger.info(String.format("Written route schedule \"%s\"", id));
 			} else  {
 				logger.warn("Unable to write route schedule "+body.encodePrettily(), done.cause());
 			}
