@@ -334,25 +334,6 @@ curl -v -X POST --data "@src/k8s/kafka/kafka-connect-elastic.json" -H "Content-T
 ----
 --
 
-== Comment ça s'assemble ?
-
-Démonstration avec Weave Scope !
-
-[source,bat]
-----
-include::../../build/0-install.bat[lines=25]
-----
-
-[source]
-----
-kubectl -n weave-scope port-forward $(kubectl -n weave-scope get endpoints weave-scope-weave-scope -o jsonpath='{.subsets[0].addresses[0].targetRef.name}') 18280:4040
-----
-
-[NOTE.speaker]
---
-**Nicolas**
---
-
 == Et si on codait quelque chose ?
 
 Par exemple une application qui lit les données depuis Navitia
@@ -395,18 +376,6 @@ A la fin, on a
 2. un projet Jenkins ( http://jenkins.jx.35.240.72.245.nip.io/job/Zenika/job/snowcamp-2019-sncf-timesheet-reader/)
 
 Et ensuite, on inejcte le code avec la commande `1-write-reader-code.bat` (qui inclut la gestion des secrets et de la config)
---
-
-=== Puis on écrit un peu de code
-
-[NOTE.speaker]
---
-**Nicolas**
-Lancer le script `src\build\1-write-reader-code.bat`
-Il crée une branche avec du vrai code.
-Il faut ensuite faire la pull request et laisser Jenkins la builder.
-
-Pendant que Jenkins builde la pull request, on parle de la configuration
 --
 
 === Comment gérer la configuration ?
