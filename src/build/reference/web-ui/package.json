@@ -1,0 +1,17 @@
+{
+  "name": "snowcamp-2019-web-ui",
+  "version": "1.0.0",
+  "description": "Une interface web pour voir les gares et les trains à l'heure (ou pas)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"no test specified\" && exit 0",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bunyan": "^1.8.12",
+    "elasticsearch": "^15.3.0",
+    "moment": "^2.24.0",
+    "node-router": "^0.1.5"
+  }
+}
