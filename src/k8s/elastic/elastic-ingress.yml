@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: elastic-ingress
+  namespace: elastic
+spec:
+  rules:
+  - host: elastic.jx.34.76.21.136.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: elasticsearch-client
+          servicePort: 9200
+        path: /
