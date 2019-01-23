@@ -1,26 +1,674 @@
 {
-    "settings" : {
-    },
+    "settings": {},
     "mappings": {
         "route_schedules": {
             "properties": {
-                "name": {
-                    "type":"text",
-                    "copy_to": "_all",
-                    "index": true,
-                    "store": true
+                "additional_informations": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    }
                 },
-                "direction": {
-                    "type":"text",
-                    "copy_to": "_all",
-                    "index": true,
-                    "store": true
+                "display_informations": {
+                    "properties": {
+                        "code": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "color": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "commercial_mode": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "direction": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "label": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "name": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "network": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "text_color": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        }
+                    }
                 },
-                "label": {
-                    "type":"text",
-                    "copy_to": "_all",
-                    "index": true,
-                    "store": true
+                "geojson": {
+                    "properties": {
+                        "type": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        }
+                    }
+                },
+                "id": {
+                    "type": "text",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword",
+                            "ignore_above": 256
+                        }
+                    }
+                },
+                "links": {
+                    "properties": {
+                        "id": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        },
+                        "internal": {
+                            "type": "boolean"
+                        },
+                        "templated": {
+                            "type": "boolean"
+                        },
+                        "type": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword",
+                                    "ignore_above": 256
+                                }
+                            }
+                        }
+                    }
+                },
+                "table": {
+                    "properties": {
+                        "headers": {
+                            "properties": {
+                                "additional_informations": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "display_informations": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "color": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "commercial_mode": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "description": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "direction": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "headsign": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                },
+                                                "internal": {
+                                                    "type": "boolean"
+                                                },
+                                                "rel": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                },
+                                                "templated": {
+                                                    "type": "boolean"
+                                                },
+                                                "type": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "name": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "network": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "physical_mode": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "text_color": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "links": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "internal": {
+                                            "type": "boolean"
+                                        },
+                                        "templated": {
+                                            "type": "boolean"
+                                        },
+                                        "type": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "rows": {
+                            "properties": {
+                                "date_times": {
+                                    "properties": {
+                                        "base_date_time": {
+                                            "type": "basic_date_time",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "data_freshness": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "date_time": {
+                                            "type": "basic_date_time",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "category": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                },
+                                                "id": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                },
+                                                "internal": {
+                                                    "type": "boolean"
+                                                },
+                                                "rel": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                },
+                                                "templated": {
+                                                    "type": "boolean"
+                                                },
+                                                "type": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                },
+                                                "value": {
+                                                    "type": "text",
+                                                    "fields": {
+                                                        "keyword": {
+                                                            "type": "keyword",
+                                                            "ignore_above": 256
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "stop_point": {
+                                    "properties": {
+                                        "administrative_regions": {
+                                            "properties": {
+                                                "coord": {
+                                                    "type": "geo_point"
+                                                }
+                                            },
+                                            "id": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "insee": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "label": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "level": {
+                                                "type": "long"
+                                            },
+                                            "name": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "zip_code": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "commercial_modes": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "name": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "coord": {
+                                        "type": "geo_point"
+                                    }
+                                },
+                                "fare_zone": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "id": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "label": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "physical_modes": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        },
+                                        "name": {
+                                            "type": "text",
+                                            "fields": {
+                                                "keyword": {
+                                                    "type": "keyword",
+                                                    "ignore_above": 256
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "stop_area": {
+                                    "properties": {
+                                        "administrative_regions": {
+                                            "properties": {
+                                                "coord": {
+                                                    "type": "geo_point"
+                                                }
+                                            },
+                                            "id": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "insee": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "label": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "level": {
+                                                "type": "long"
+                                            },
+                                            "name": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "zip_code": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "codes": {
+                                        "properties": {
+                                            "type": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            },
+                                            "value": {
+                                                "type": "text",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "ignore_above": 256
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "coord": {
+                                        "type": "geo_point"
+                                    }
+                                },
+                                "id": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "label": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "name": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                },
+                                "timezone": {
+                                    "type": "text",
+                                    "fields": {
+                                        "keyword": {
+                                            "type": "keyword",
+                                            "ignore_above": 256
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
