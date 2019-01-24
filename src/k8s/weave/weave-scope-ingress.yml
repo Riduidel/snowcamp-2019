@@ -3,9 +3,11 @@ kind: Ingress
 metadata:
   name: weave-scope-ingress
   namespace: weave-scope
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
-  - host: weave-scope.jx.34.76.21.136.nip.io
+  - host: weave-scope.jx.35.233.117.189.nip.io
     http:
       paths:
       - backend:

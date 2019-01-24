@@ -5,7 +5,7 @@ metadata:
   namespace: elastic
 spec:
   rules:
-  - host: elastic.jx.34.76.21.136.nip.io
+  - host: elastic.jx.35.233.117.189.nip.io
     http:
       paths:
       - backend:

@@ -15,7 +15,7 @@ route('POST', bodyParser.json());
 
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
-	host: 'elastic.jx.34.76.21.136.nip.io',
+	host: 'elastic.jx.35.233.117.189.nip.io',
 	log: 'info'
   });
 
@@ -117,7 +117,7 @@ function timesheets_for(req, res, next) {
 				]
 			  }
 			}
-		  }
+		}
 	}).then(response => {
 		let returned = []
 		// Now it's time to parse that deadly response (and filter out uninteresting elements - like already gone trains)
