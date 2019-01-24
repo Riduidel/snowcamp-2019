@@ -81,21 +81,25 @@
 	</style>
 
 	<div class="container">
-		<div id="home-page">
-			<form autocomplete="off" id="stations">
-				<div class="autocomplete" style="width:300px;">
-					<input id="selectedStation" type="text" name="selectedStation" placeholder="Gare">
+		<div class="row">
+			<div class="col-sm">
+				<div id="home-page">
+					<form autocomplete="off" id="stations">
+						<div class="autocomplete" style="width:300px;">
+							<input id="selectedStation" type="text" name="selectedStation" placeholder="Gare">
+						</div>
+						<input type="submit">
+					</form>
 				</div>
-				<input type="submit">
-			</form>
-		</div>
-		<div id="schedule-list" hidden>
-			<ul class="next-schedules" />
-		</div>
-		<div id="late-page" hidden>
-			<h1 id="late-schedule-title"></h1>
-			<button type="button" class="btn btn-primary">A l'heure</button>
-			<button type="button" class="btn btn-danger">En retard</button>
+				<div id="schedule-list" hidden>
+					<ul class="next-schedules list-group" />
+				</div>
+				<div id="late-page" hidden>
+					<ul class="list-group">
+						<li id="late-schedule-title" class="list-group-item"></li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -210,8 +214,20 @@
 			document.querySelector('#home-page').setAttribute('hidden', true)
 
 			nextTrains.map(schedule => {
-				const parent = document.createElement("li");
+				// date is transported as string !
+				let d = new Date(schedule.date)
+
+				const parent = document.createElement("button");
 				parent.classList.add('list-group-item');
+				parent.classList.add('schedule');
+				parent.setAttribute('id', schedule.id)
+
+				parent.innerHTML = `
+<div class="d-flex w-100 justify-content-between">
+<b>${schedule.destination}</b>
+<i>${d.toLocaleTimeString()}</i>
+</div>
+`
 				if (false) {
 					// si je suis en retard
 					parent.classList.add('late');
@@ -222,24 +238,13 @@
 					evt.stopPropagation();
 
 					let element = evt.target
-					while (element.nodeName !== "LI") {
+					while (element.nodeName !== "BUTTON") {
 						element = element.parentElement
 					}
 
 					let usedSchedule = JSON.parse(element.getAttribute('data-schedule'))
 					displayLatePage(usedSchedule)
 				});
-
-				// date is transported as string !
-				let d = new Date(schedule.date)
-
-				parent.innerHTML = `
-		<a id="${schedule.id}" href="#" 
-			class="list-group-ite list-group-item-action schedule">
-			<b>${schedule.destination}</b>
-			<i>${d.toLocaleTimeString()}</i>
-		</a>
-        `
 
 				return parent;
 			})
@@ -249,9 +254,18 @@
 		function displayLatePage(schedule) {
 			let d = new Date(schedule.date)
 			document.querySelector("#late-schedule-title").innerHTML = `
-			<b>${schedule.destination}</b>
-			<i>${d.toLocaleTimeString()}</i>
-			`
+<div class="d-flex w-100 justify-content-between">
+<b>${schedule.destination}</b>
+<div>
+	<i>${d.toLocaleTimeString()}</i>
+	<button type="button" class="btn btn-primary">A l'heure</button>
+	<button type="button" class="btn btn-danger">En retard</button>
+</div>
+</div>
+`
+			document.querySelector('.btn-primary').addEventListener('click', setStatus('on-time'))
+			document.querySelector('.btn-danger').addEventListener('click', setStatus('late'))
+
 			document.querySelector('#schedule-list').setAttribute('hidden', true)
 			document.querySelector('#late-page').removeAttribute('hidden')
 			document.querySelector('#home-page').setAttribute('hidden', true)
@@ -267,9 +281,6 @@
 				displayHomePage()
 			}
 		}
-
-		document.querySelector('.btn-primary').addEventListener('click', setStatus('on-time'))
-		document.querySelector('.btn-danger').addEventListener('click', setStatus('late'))
 
 		// Ici tu feras la query vers ES
 		fetch("stations")
