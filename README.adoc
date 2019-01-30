@@ -1,17 +1,21 @@
 # Avoir un train à l'heure, c'est kafkaïen
 > Repository principal de notre présentation à Snowcamp 2019
 
-Ce repository contient l'ensemble des éléments présentés au snowcamp. L'objectif est d'avoir une présentation "all-in",a vec l'ensemble des scripts utilisables en cours de présentation pour les démos.
+## What does this repository contains ?
 
-## Installation
-
-1. Installer la ligne de commande jenkins-x
-2. Lancer `mvn package`
-3. La version complète de la présentation est dans http://target/asciidoc/slides/index.html[`target/asciidoc/slides/index.html`]
+* `src/build` contains various build scripts 
+** `0-install.sh` installs the environment, provided the secrets are known
+** `1-write-reader-code.bat` copies reader code in its own repository
+** `2-write-web-ui.bat` copies web ui in its own repository
+** `delete.bat` deletes the cluster, and the various generated projects
+* `src/k8s` contains all deployed into k8s cluster
+** `elastic` provides ingresses for Kibana and Elasticsearch (**DON'T DO THAT IN PROD**)
+** `kafka` installs all additionnal applications for kafka
 
 ## Meta
 
-Nicolas Delsaux – https://twitter.com/Riduidel[@Riduidel]
+* Logan Hauspie – https://twitter.com/lhauspie[@lhauspie]
+* Nicolas Delsaux – https://twitter.com/Riduidel[@Riduidel]
 
 ## Contributing
 
