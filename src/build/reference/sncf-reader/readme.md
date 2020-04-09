@@ -2,7 +2,7 @@
 
 This application allows us to inject SNCF timesheets into our Kafka engine, for later processing.
 
-# Configuration
+## Configuration
 This application requires the following environment variables to be set
 
 * `SNCF_READER_TOKEN` access token for Navitia API
