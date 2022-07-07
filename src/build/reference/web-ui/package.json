@@ -11,7 +11,7 @@
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "elasticsearch": "^15.3.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-router": "^0.1.5"
   }
 }
